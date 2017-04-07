@@ -7,6 +7,28 @@
     android:background="@drawable/background"
     tools:context="com.example.choudry.electroniceventapproval.LoginActivity">
 
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Electronic"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_25sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_50sdp"
+        />
+
+    <TextView
+        android:id="@+id/title_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Event Approval"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_25sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/title_text"
+        />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,6 +106,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/doUWant"
             android:textColor="@color/colorPrimary"
             android:text="Don't have an acount?" />
 

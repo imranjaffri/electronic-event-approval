@@ -1,6 +1,7 @@
 package com.example.choudry.electroniceventapproval;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,11 +21,14 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity implements CallPostAPI.ResponseHandler {
 
     TextView textSignUp;
+    TextView do_u_want;
     Button btnSignIn;
     private EditText email;
     private EditText password;
     private String userName;
     private String userPassword;
+    private TextView tite_text;
+    private TextView tite_text2;
 
 
     @Override
@@ -34,9 +38,11 @@ public class LoginActivity extends AppCompatActivity implements CallPostAPI.Resp
 
         email = (EditText) findViewById(R.id.et_mail_signIn);
         password = (EditText) findViewById(R.id.et_pass_signIn);
-
-
         textSignUp = (TextView) findViewById(R.id.tv_signUp);
+        tite_text = (TextView) findViewById(R.id.title_text);
+        tite_text2 = (TextView) findViewById(R.id.title_text2);
+        do_u_want = (TextView) findViewById(R.id.doUWant);
+        btnSignIn = (Button) findViewById(R.id.btn_SignIn);
 
         textSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +56,21 @@ public class LoginActivity extends AppCompatActivity implements CallPostAPI.Resp
         });
 
 
-        btnSignIn = (Button) findViewById(R.id.btn_SignIn);
+        // Getting fonts...
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
+        Typeface custom_font_bold = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
+
+        // Applying fonts...
+        email.setTypeface(custom_font);
+        password.setTypeface(custom_font);
+        textSignUp.setTypeface(custom_font);
+        btnSignIn.setTypeface(custom_font);
+        do_u_want.setTypeface(custom_font);
+        tite_text.setTypeface(custom_font);
+        tite_text2.setTypeface(custom_font);
+
+
+
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
 
