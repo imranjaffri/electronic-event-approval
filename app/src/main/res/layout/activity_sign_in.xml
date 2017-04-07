@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context="com.example.choudry.electroniceventapproval.LoginActivity">
+
+
+
+    <EditText
+        android:id="@+id/et_mail_signIn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/border"
+        android:ems="10"
+        android:hint="user id"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="5dp"
+        android:textColorHint="@color/colorPrimary" />
+
+    <EditText
+        android:id="@+id/et_pass_signIn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textColorHint="@color/colorPrimary"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/border"
+        android:layout_below="@+id/et_mail_signIn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="password"
+
+        android:inputType="textPassword"
+        android:paddingLeft="5dp"
+        />
+
+    <Button
+        android:id="@+id/btn_SignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_pass_signIn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="43dp"
+        android:background="@color/colorPrimary"
+        android:text="Login"
+        android:textColor="@color/colorWhite" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_SignIn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an acount?" />
+
+        <TextView
+            android:id="@+id/tv_signUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign up"
+            android:textColor="@color/colorWhite"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
