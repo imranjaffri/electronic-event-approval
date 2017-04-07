@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/background"
     android:orientation="vertical"
     tools:context="com.example.choudry.electroniceventapproval.ReceivedActivity">
 
@@ -43,7 +43,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="2dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@drawable/button_states"
             android:text="Approved"
             android:textColor="@color/colorWhite" />
 
@@ -54,7 +54,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="2dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@drawable/button_states"
             android:text="Disapproved"
             android:textColor="@color/colorWhite" />
 

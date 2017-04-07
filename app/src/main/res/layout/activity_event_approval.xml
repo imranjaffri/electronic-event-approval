@@ -6,7 +6,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackground"
+    android:background="@drawable/background"
         android:orientation="vertical"
         tools:context="com.example.choudry.electroniceventapproval.EventApprovalActivity">
 
@@ -80,7 +80,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_states"
             android:text="Submit"
             android:textColor="@color/colorWhite"
 
