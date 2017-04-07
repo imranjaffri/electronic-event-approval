@@ -20,9 +20,9 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements CallPostAPI.ResponseHandler {
 
-    TextView textSignUp;
-    TextView do_u_want;
-    Button btnSignIn;
+    private TextView textSignUp;
+    private TextView do_u_want;
+    private Button btnSignIn;
     private EditText email;
     private EditText password;
     private String userName;
@@ -57,17 +57,17 @@ public class LoginActivity extends AppCompatActivity implements CallPostAPI.Resp
 
 
         // Getting fonts...
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
-        Typeface custom_font_bold = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
+        Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
+        Typeface simple_font = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
 
         // Applying fonts...
-        email.setTypeface(custom_font);
-        password.setTypeface(custom_font);
-        textSignUp.setTypeface(custom_font);
-        btnSignIn.setTypeface(custom_font);
-        do_u_want.setTypeface(custom_font);
-        tite_text.setTypeface(custom_font);
-        tite_text2.setTypeface(custom_font);
+        email.setTypeface(simple_font);
+        password.setTypeface(simple_font);
+        textSignUp.setTypeface(bold_font);
+        btnSignIn.setTypeface(simple_font);
+        do_u_want.setTypeface(simple_font);
+        tite_text.setTypeface(simple_font);
+        tite_text2.setTypeface(simple_font);
 
 
 
