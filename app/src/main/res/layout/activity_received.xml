@@ -9,23 +9,34 @@
     tools:context="com.example.choudry.electroniceventapproval.ReceivedActivity">
 
 
+    <include
+        android:id="@+id/tool_bar_received_activity"
+        layout="@layout/tool_bar_">
+
+
+    </include>
+
+
     <ImageView
         android:id="@+id/iv_received"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/image" />
 
 
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:background="@color/colorWhite"
+        android:background="@drawable/border_edit"
+        android:gravity="start"
+        android:hint="Discription"
+        android:padding="@dimen/_5sdp"
 
         />
 

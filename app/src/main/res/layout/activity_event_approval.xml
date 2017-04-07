@@ -1,90 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/background"
-        android:orientation="vertical"
-        tools:context="com.example.choudry.electroniceventapproval.EventApprovalActivity">
+    android:orientation="vertical"
+
+    tools:context="com.example.choudry.electroniceventapproval.EventApprovalActivity">
+
+    <include layout="@layout/tool_bar_event_apporoval">
 
 
-        <EditText
-            android:id="@+id/et_title"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textColorHint="@color/colorPrimary"
-            android:textColor="@color/colorPrimary"
-            android:background="@drawable/border"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="5dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:hint="title"
+    </include>
+
+    <EditText
+        android:id="@+id/et_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@drawable/border_edit"
+        android:gravity="start"
+        android:hint="title"
+        android:padding="5dp"
+        android:drawableRight="@drawable/edit"
 
 
 
-            />
+        />
 
-        <EditText
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:textColorHint="@color/colorPrimary"
-            android:textColor="@color/colorPrimary"
-            android:background="@drawable/border"
-            android:gravity="start"
-            android:padding="5dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@drawable/border_edit"
+        android:gravity="start"
+        android:hint="description"
+        android:drawableRight="@drawable/edit"
+        android:padding="5dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+
+
+        <ImageView
+            android:id="@+id/iv_event"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_marginTop="2dp"
-            android:hint="description"
-            />
+            android:src="@drawable/image"
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp">
-
-
-            <ImageView
-                android:id="@+id/iv_event"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="2dp"
-                android:src="@drawable/image"
-
-
-                />
-
-            <ImageButton
-                android:id="@+id/btn_uploadImage"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/upload"
-
-                />
-
-        </RelativeLayout>
-
-
-        <Button
-            android:id="@+id/btn_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button_states"
-            android:text="Submit"
-            android:textColor="@color/colorWhite"
 
             />
 
+        <ImageButton
+            android:id="@+id/btn_uploadImage"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/upload"
 
-    </LinearLayout>
+            />
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_states"
+        android:text="Submit"
+        android:textColor="@color/colorWhite"
+
+        />
+
+
+</LinearLayout>

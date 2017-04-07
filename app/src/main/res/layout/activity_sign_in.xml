@@ -7,27 +7,33 @@
     android:background="@drawable/background"
     tools:context="com.example.choudry.electroniceventapproval.LoginActivity">
 
+    <ImageButton
+        android:id="@+id/back_btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="#c6e6f1"
+        android:src="@drawable/back" />
+
     <TextView
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Electronic"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_25sdp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_50sdp"
-        />
+        android:text="Electronic"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_25sdp" />
 
     <TextView
         android:id="@+id/title_text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/title_text"
+        android:layout_centerHorizontal="true"
         android:text="Event Approval"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_25sdp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/title_text"
-        />
+        android:textSize="@dimen/_25sdp" />
 
 
     <LinearLayout
@@ -104,21 +110,20 @@
 
 
         <TextView
+            android:id="@+id/doUWant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/doUWant"
-            android:textColor="@color/colorPrimary"
-            android:text="Don't have an acount?" />
+            android:text="Don't have an acount?"
+            android:textColor="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/tv_signUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign up"
             android:layout_marginLeft="@dimen/_2sdp"
+            android:text="Sign up"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="15dp"
-             />
+            android:textSize="15dp" />
 
 
     </LinearLayout>
