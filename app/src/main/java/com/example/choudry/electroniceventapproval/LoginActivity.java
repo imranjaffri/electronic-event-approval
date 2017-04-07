@@ -5,18 +5,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity {
+import com.example.choudry.electroniceventapproval.api.CallPostAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class LoginActivity extends AppCompatActivity implements CallPostAPI.ResponseHandler {
 
     TextView textSignUp;
     Button btnSignIn;
+    private EditText email;
+    private EditText password;
+    private String userName;
+    private String userPassword;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        email = (EditText) findViewById(R.id.et_mail_signIn);
+        password = (EditText) findViewById(R.id.et_pass_signIn);
 
 
         textSignUp = (TextView) findViewById(R.id.tv_signUp);
@@ -40,15 +57,44 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(LoginActivity.this, ThreecategoryActivity.class);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                userName = email.getText().toString();
+                userPassword = password.getText().toString();
+
+
+                String url = "http://sgs.sentinelireports.com/webservices-si-app/user_login.php";
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("request", "ios");
+                map.put("email", userName);
+                map.put("password", userPassword);
+                map.put("type", "guard");
+
+                CallPostAPI callPostAPI = new CallPostAPI(LoginActivity.this, url, map);
+                callPostAPI.Call();
 
 
             }
         });
 
 
+    }
+
+    @Override
+    public void onResponse(String response) {
+        JSONObject reader = null;
+
+        try {
+            reader = new JSONObject(response);
+
+            String msg = reader.getString("message");
+            String success = reader.getString("success");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onError(String error) {
+        Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
     }
 }
