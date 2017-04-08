@@ -7,11 +7,19 @@
     android:background="@drawable/background"
     tools:context="com.example.choudry.electroniceventapproval.ResultActivity">
 
+    <include
+        android:id="@+id/toolBarResult"
+        layout="@layout/tool_bar_result">
+
+
+    </include>
+
 
     <LinearLayout
         android:id="@+id/result1"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_below="@+id/toolBarResult"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
@@ -19,16 +27,18 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/singer_first_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:text="Singer First"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="40dp" />
+            android:textSize="@dimen/_30sdp" />
 
 
         <TextView
+            android:id="@+id/vote_singer_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -52,16 +62,18 @@
 
 
         <TextView
+            android:id="@+id/singer_second_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:text="Singer Second"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="40dp" />
+            android:textSize="@dimen/_30sdp" />
 
 
         <TextView
+            android:id="@+id/vote_singer_second"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

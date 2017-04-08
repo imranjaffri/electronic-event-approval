@@ -9,6 +9,13 @@
     tools:context="com.example.choudry.electroniceventapproval.ThreecategoryActivity">
 
 
+    <include
+        android:id="@+id/toolBarCategories"
+        layout="@layout/tool_bar_categories">
+
+
+    </include>
+
     <ImageView
         android:id="@+id/eventApproval"
         android:layout_width="match_parent"

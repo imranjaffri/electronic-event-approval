@@ -8,6 +8,13 @@
     android:orientation="vertical"
     tools:context="com.example.choudry.electroniceventapproval.VoteCastActivity">
 
+    <include
+        android:id="@+id/toolBarVoteCast"
+        layout="@layout/tool_bar_vote_cast">
+
+
+    </include>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,6 +71,7 @@
 
 
     <Button
+        android:id="@+id/cast_vote_btn"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

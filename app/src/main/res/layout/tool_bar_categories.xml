@@ -6,7 +6,7 @@
 
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_categories"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
@@ -16,13 +16,14 @@
 
 
         <ImageButton
-            android:id="@+id/back_btn_received"
+            android:id="@+id/back_btn_categories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:src="@drawable/back" />
 
         <ImageButton
+            android:id="@+id/notification_categories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

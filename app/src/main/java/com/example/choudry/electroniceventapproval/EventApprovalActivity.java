@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -22,6 +23,10 @@ public class EventApprovalActivity extends AppCompatActivity {
     Button btn;
     Intent intent;
     String[] FILE;
+
+    private EditText title;
+    private EditText description;
+    private Button submit_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
