@@ -1,8 +1,12 @@
 package com.example.choudry.electroniceventapproval;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class ResultActivity extends AppCompatActivity {
@@ -16,6 +20,10 @@ public class ResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_result);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         singer_first_result = (TextView) findViewById(R.id.singer_first_result);
         singer_second_result = (TextView) findViewById(R.id.singer_second_result);
@@ -31,5 +39,26 @@ public class ResultActivity extends AppCompatActivity {
         singer_second_result.setTypeface(simple_font);
         vote_singer_first.setTypeface(simple_font);
         vote_singer_sencond.setTypeface(simple_font);
+
+
+        ImageButton backBtn = (ImageButton) findViewById(R.id.back_btn_result);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent backIntent = new Intent(ResultActivity.this, ThreecategoryActivity.class);
+//                startActivity(backIntent);
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
 }

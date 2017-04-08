@@ -3,6 +3,7 @@ package com.example.choudry.electroniceventapproval;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -17,6 +18,11 @@ public class ReceivedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_received);
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_received_activity);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         approveBtn = (Button) findViewById(R.id.approved);
         disApproveBtn = (Button) findViewById(R.id.disApprove);

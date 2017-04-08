@@ -11,7 +11,9 @@
 
     tools:context="com.example.choudry.electroniceventapproval.EventApprovalActivity">
 
-    <include layout="@layout/tool_bar_event_apporoval">
+    <include
+        android:id="@+id/toolBarEventApproval"
+        layout="@layout/tool_bar_event_apporoval">
 
 
     </include>
@@ -22,10 +24,10 @@
         android:layout_height="60dp"
         android:layout_margin="@dimen/_5sdp"
         android:background="@drawable/border_edit"
+        android:drawableRight="@drawable/edit"
         android:gravity="start"
         android:hint="title"
         android:padding="5dp"
-        android:drawableRight="@drawable/edit"
 
         />
 
@@ -35,16 +37,15 @@
         android:layout_height="140dp"
         android:layout_margin="@dimen/_5sdp"
         android:background="@drawable/border_edit"
+        android:drawableRight="@drawable/edit"
         android:gravity="start"
         android:hint="description"
-        android:drawableRight="@drawable/edit"
         android:padding="5dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
+        android:padding="@dimen/_8sdp">
 
 
         <ImageView
@@ -72,7 +73,7 @@
 
     <Button
         android:id="@+id/btn_submit"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="10dp"
