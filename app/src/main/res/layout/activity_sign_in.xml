@@ -55,7 +55,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/border"
             android:ems="10"
-            android:hint="user id"
+            android:hint="Email Id"
             android:inputType="textEmailAddress"
             android:paddingLeft="5dp"
             android:textColor="@color/colorPrimary"

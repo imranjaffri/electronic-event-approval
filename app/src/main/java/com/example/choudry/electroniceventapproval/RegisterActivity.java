@@ -108,7 +108,43 @@ public class RegisterActivity extends AppCompatActivity implements CallPostAPI.R
                     snackbar.show();
 
 
+                } else if (user_email.equals("") && !user_password.equals("") && !user_comfirm_password.equals("")) {
+
+                    Snackbar snackbar = Snackbar.make(signUpLayout, "please Enter a Email", Snackbar.LENGTH_SHORT);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setPadding(20, 0, 0, 0);
+                    snackbar.show();
+
                 } else if (user_password.equals("") && user_comfirm_password.equals("") && !user_email.matches(emailPattern)) {
+
+                    Snackbar snackbar = Snackbar.make(signUpLayout, "Please Enter a Valid Email", Snackbar.LENGTH_SHORT);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setPadding(20, 0, 0, 0);
+                    snackbar.show();
+
+                } else if (!user_password.equals("") && user_comfirm_password.equals("") && !user_email.matches(emailPattern)) {
+
+                    Snackbar snackbar = Snackbar.make(signUpLayout, "Please Enter a Valid Email", Snackbar.LENGTH_SHORT);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setPadding(20, 0, 0, 0);
+                    snackbar.show();
+
+                } else if (user_password.equals("") && !user_comfirm_password.equals("") && !user_email.matches(emailPattern)) {
+
+                    Snackbar snackbar = Snackbar.make(signUpLayout, "Please Enter a Valid Email", Snackbar.LENGTH_SHORT);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setPadding(20, 0, 0, 0);
+                    snackbar.show();
+
+                } else if (!user_password.equals("") && !user_comfirm_password.equals("") && !user_email.matches(emailPattern)) {
 
                     Snackbar snackbar = Snackbar.make(signUpLayout, "Please Enter a Valid Email", Snackbar.LENGTH_SHORT);
                     View snackBarView = snackbar.getView();
@@ -136,15 +172,6 @@ public class RegisterActivity extends AppCompatActivity implements CallPostAPI.R
                     textView.setPadding(20, 0, 0, 0);
                     snackbar.show();
 
-
-                } else if (user_email.equals("") && !user_password.equals("") && !user_comfirm_password.equals("")) {
-
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "please Enter a Email", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
 
                 } else if (!user_email.equals("") && !user_password.equals("") && user_comfirm_password.equals("")) {
 
@@ -174,7 +201,7 @@ public class RegisterActivity extends AppCompatActivity implements CallPostAPI.R
                     snackbar.show();
                 } else {
 
-                    // Api Call.......
+                    // Api Call......
 
                     String url = "http://s5technology.com/demo/student/api/user/signup";
                     pDialog = new ProgressDialog(RegisterActivity.this, R.style.AppCompatAlertDialogStyle);
@@ -187,7 +214,7 @@ public class RegisterActivity extends AppCompatActivity implements CallPostAPI.R
                             Log.d(TAG, response);
                             pDialog.hide();
 
-                            JSONObject reader=null;
+                            JSONObject reader = null;
 
                             try {
                                 reader = new JSONObject(response);
