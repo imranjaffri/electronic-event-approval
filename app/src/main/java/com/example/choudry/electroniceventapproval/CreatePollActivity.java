@@ -41,6 +41,7 @@ public class CreatePollActivity extends AppCompatActivity {
         ImageButton backBtn = (ImageButton) findViewById(R.id.back_btn_create_poll);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
 //                Intent backIntent = new Intent(CreatePollActivity.this, ThreecategoryActivity.class);
 //                startActivity(backIntent);
