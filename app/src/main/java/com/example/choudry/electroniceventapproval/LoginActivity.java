@@ -72,8 +72,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
-                finish();
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
+
             }
         });
 
@@ -174,6 +175,11 @@ public class LoginActivity extends AppCompatActivity {
 
                                 if (status.equals("true")) {
                                     CommonUtils.showToast(msg, LoginActivity.this);
+
+                                    Intent intent = new Intent(LoginActivity.this, ThreecategoryActivity.class);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                                    finish();
 
 
                                 } else {

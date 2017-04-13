@@ -20,12 +20,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
 
         </activity>
         <activity android:name=".ThreecategoryActivity">
@@ -33,11 +27,20 @@
 
         </activity>
         <activity android:name=".EventApprovalActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegisterActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ReceivedActivity" />
         <activity android:name=".ResultActivity" />
         <activity android:name=".VoteCastActivity" />
-        <activity android:name=".CreatePollActivity"></activity>
+        <activity android:name=".CreatePollActivity">
+
+        </activity>
     </application>
 
 </manifest>

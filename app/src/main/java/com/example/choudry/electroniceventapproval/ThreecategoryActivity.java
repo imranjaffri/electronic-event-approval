@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class ThreecategoryActivity extends AppCompatActivity {
@@ -28,6 +29,18 @@ public class ThreecategoryActivity extends AppCompatActivity {
         image1 = (ImageView) findViewById(R.id.eventApproval);
         image2 = (ImageView) findViewById(R.id.voteCasting);
         image3 = (ImageView) findViewById(R.id.showResult);
+
+
+        ImageButton backBtn = (ImageButton) findViewById(R.id.back_btn_categories);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+
+            }
+        });
 
 
 

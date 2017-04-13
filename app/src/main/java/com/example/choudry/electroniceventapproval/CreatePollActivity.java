@@ -43,8 +43,7 @@ public class CreatePollActivity extends AppCompatActivity {
             @Override
 
             public void onClick(View v) {
-//                Intent backIntent = new Intent(CreatePollActivity.this, ThreecategoryActivity.class);
-//                startActivity(backIntent);
+
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
 
