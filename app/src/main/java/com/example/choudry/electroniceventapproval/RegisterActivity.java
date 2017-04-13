@@ -178,7 +178,7 @@ public class RegisterActivity extends AppCompatActivity implements CallPostAPI.R
 
                     String url = "http://s5technology.com/demo/student/api/user/signup";
                     pDialog = new ProgressDialog(RegisterActivity.this, R.style.AppCompatAlertDialogStyle);
-                    pDialog.setMessage("Signing Up...");
+                    pDialog.setMessage("Signing Up..");
                     pDialog.show();
 
                     StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
