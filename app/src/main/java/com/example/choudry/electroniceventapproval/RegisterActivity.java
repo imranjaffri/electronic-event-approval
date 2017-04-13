@@ -187,7 +187,7 @@ public class RegisterActivity extends AppCompatActivity implements CallPostAPI.R
                             Log.d(TAG, response);
                             pDialog.hide();
 
-                            JSONObject reader;
+                            JSONObject reader=null;
 
                             try {
                                 reader = new JSONObject(response);
