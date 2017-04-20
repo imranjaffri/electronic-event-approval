@@ -1,35 +1,26 @@
 package com.example.choudry.electroniceventapproval;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.choudry.electroniceventapproval.api.CallPostAPI;
+import com.example.choudry.electroniceventapproval.api.GetAPIRequest;
 import com.example.choudry.electroniceventapproval.app.AppController;
-import com.example.choudry.electroniceventapproval.utils.CommonUtils;
+import com.example.choudry.electroniceventapproval.data.User;
+import com.example.choudry.electroniceventapproval.data.UserLogin;
+import com.example.choudry.electroniceventapproval.utils.SharedPreferenceUtils;
+import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tite_text;
     private TextView tite_text2;
     private RelativeLayout loginLaout;
-    private ProgressDialog pDialog;
 
 
     RequestQueue ExampleRequestQueue;
@@ -58,7 +48,13 @@ public class LoginActivity extends AppCompatActivity {
         ExampleRequestQueue = Volley.newRequestQueue(this);
 
         email = (EditText) findViewById(R.id.et_mail_signIn);
+
+        email.setText("admin@admin.com");
+
         password = (EditText) findViewById(R.id.et_pass_signIn);
+
+        password.setText("abc123");
+
         textSignUp = (TextView) findViewById(R.id.tv_signUp);
         tite_text = (TextView) findViewById(R.id.title_text);
         tite_text2 = (TextView) findViewById(R.id.title_text2);
@@ -69,12 +65,9 @@ public class LoginActivity extends AppCompatActivity {
         textSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
-
-
             }
         });
 
@@ -103,105 +96,70 @@ public class LoginActivity extends AppCompatActivity {
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 // checks....
 
-
                 if (userName.equals("") && userPassword.equals("")) {
-
-                    Snackbar snackbar = Snackbar.make(loginLaout, "Please Enter the Credentials", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
-
+                    AppController.showSnackBar(LoginActivity.this, loginLaout, "Please Enter the Credentials");
 
                 } else if (userPassword.equals("") && !userName.matches(emailPattern)) {
 
-                    Snackbar snackbar = Snackbar.make(loginLaout, "Please Enter a Valid Email", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(LoginActivity.this, loginLaout, "Please Enter a Valid Email");
 
                 } else if (!userName.equals("") && userPassword.equals("")) {
 
-                    Snackbar snackbar = Snackbar.make(loginLaout, "please Enter the Password", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(LoginActivity.this, loginLaout, "please Enter the Password");
 
 
                 } else if (userName.equals("") && !userPassword.equals("")) {
 
-                    Snackbar snackbar = Snackbar.make(loginLaout, "please Enter a Email", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(LoginActivity.this, loginLaout, "please Enter a Email");
 
                 } else if (!userName.matches(emailPattern)) {
 
-                    Snackbar snackbar = Snackbar.make(loginLaout, "Not Valid Email", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(LoginActivity.this, loginLaout, "Not Valid Email");
 
                 } else {
 
                     // api call...
                     String url = "http://s5technology.com/demo/student/api/user/signin?email=" + userName + "&password=" + userPassword;
-                    pDialog = new ProgressDialog(LoginActivity.this, R.style.AppCompatAlertDialogStyle);
-                    pDialog.setMessage("Logging In...");
-                    pDialog.show();
 
-                    StringRequest strreq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                    new GetAPIRequest(LoginActivity.this, url, new GetAPIRequest.ResponseHandler() {
                         @Override
-                        public void onResponse(String Response) {
-                            pDialog.hide();
-                            pDialog.hide();
+                        public void onResponse(String response) {
+                            Log.v("Response", response);
 
-                            JSONObject reader;
+                            UserLogin userHandle = new Gson().fromJson(response, UserLogin.class);
 
-                            try {
-                                reader = new JSONObject(Response);
+                            if (userHandle == null)
+                                return;
 
-                                String status = reader.getString("status");
-                                String msg = reader.getString("message");
+                            ArrayList<User> users = userHandle.getData();
 
-                                if (status.equals("true")) {
-                                    CommonUtils.showToast(msg, LoginActivity.this);
-
-                                    Intent intent = new Intent(LoginActivity.this, ThreecategoryActivity.class);
-                                    startActivity(intent);
-                                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                                    finish();
-
-
-                                } else {
-                                    CommonUtils.showToast(msg, LoginActivity.this);
+                            if (users != null && users.size() > 0) {
+                                User user = userHandle.getData().get(0);
+                                SharedPreferenceUtils.saveLoggedUser(LoginActivity.this, user);
+                                switch (user.getType()) {
+                                    case "0":
+                                        startActivity(new Intent(LoginActivity.this, VoteCastActivity.class));
+                                        finish();
+                                        break;
+                                    case "1":
+                                        startActivity(new Intent(LoginActivity.this, ThreecategoryActivity.class));
+                                        finish();
+                                        break;
+                                    default:
+                                        startActivity(new Intent(LoginActivity.this, ReceivedActivity.class));
+                                        finish();
+                                        break;
                                 }
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
                         }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError e) {
-                            e.printStackTrace();
 
-                            VolleyLog.d(TAG, "Error: " + e.getMessage());
-                            Log.d(TAG, "" + e.getMessage() + "," + e.toString());
-                            CommonUtils.showToast(e.toString(), LoginActivity.this);
+                        @Override
+                        public void onError(String error) {
+                            AppController.showSnackBar(LoginActivity.this, loginLaout, error);
                         }
-                    });
-                    AppController.getInstance().addToRequestQueue(strreq);
+                    }).initiate();
+
                 }
 
             }

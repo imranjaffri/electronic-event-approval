@@ -1,4 +1,4 @@
-package com.example.choudry.electroniceventapproval.utils;
+package com.example.choudry.electroniceventapproval.volley;
 
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;

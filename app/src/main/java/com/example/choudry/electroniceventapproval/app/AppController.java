@@ -1,14 +1,19 @@
 package com.example.choudry.electroniceventapproval.app;
 
 
+import android.app.Activity;
 import android.app.Application;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import com.example.choudry.electroniceventapproval.utils.LruBitmapCache;
+import com.example.choudry.electroniceventapproval.R;
+import com.example.choudry.electroniceventapproval.volley.LruBitmapCache;
 
 
 public class AppController extends Application {
@@ -64,5 +69,14 @@ public class AppController extends Application {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
+    }
+
+    public static void showSnackBar(Activity activity, View layout, String message) {
+        Snackbar snackbar = Snackbar.make(layout, message, Snackbar.LENGTH_SHORT);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimary));
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setPadding(20, 0, 0, 0);
+        snackbar.show();
     }
 }

@@ -26,17 +26,25 @@
 
 
         </activity>
-        <activity android:name=".EventApprovalActivity" />
+        <activity android:name=".EventApprovalActivity" >
+
+
+
+            </activity>
         <activity android:name=".RegisterActivity">
+
+        </activity>
+        <activity android:name=".ReceivedActivity" />
+        <activity android:name=".ResultActivity" 
+            android:label="Results">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".ReceivedActivity" />
-        <activity android:name=".ResultActivity" />
+
+            </activity>
         <activity android:name=".VoteCastActivity" />
         <activity android:name=".CreatePollActivity">
 

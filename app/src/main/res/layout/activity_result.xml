@@ -1,88 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    tools:context="com.example.choudry.electroniceventapproval.ResultActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".ResultActivity">
 
-    <include
-        android:id="@+id/toolBarResult"
-        layout="@layout/tool_bar_result">
-
-
-    </include>
-
-
-    <LinearLayout
-        android:id="@+id/result1"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@+id/toolBarResult"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorWhite"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <TextView
-            android:id="@+id/singer_first_result"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_result"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="Singer First"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/_30sdp" />
+            app:tabIndicatorColor="@android:color/white"
+            app:tabGravity="fill"
+            app:tabMode="fixed" />
+
+    </android.support.design.widget.AppBarLayout>
 
 
-        <TextView
-            android:id="@+id/vote_singer_first"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="4567365427"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="30dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/result2"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@+id/result1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorWhite"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-        <TextView
-            android:id="@+id/singer_second_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="Singer Second"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/_30sdp" />
-
-
-        <TextView
-            android:id="@+id/vote_singer_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="6783645738"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="30dp" />
-
-
-    </LinearLayout>
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

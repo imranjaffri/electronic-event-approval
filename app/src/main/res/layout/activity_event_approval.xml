@@ -1,88 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:orientation="vertical"
+    android:layout_height="match_parent">
 
-    tools:context="com.example.choudry.electroniceventapproval.EventApprovalActivity">
-
-    <include
-        android:id="@+id/toolBarEventApproval"
-        layout="@layout/tool_bar_event_apporoval">
-
-
-    </include>
-
-    <EditText
-        android:id="@+id/et_title"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_margin="@dimen/_5sdp"
-        android:background="@drawable/border_edit"
-        android:drawableRight="@drawable/edit"
-        android:gravity="start"
-        android:hint="title"
-        android:padding="5dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background"
+        android:orientation="vertical"
+        android:id="@+id/mainLayout"
+        tools:context="com.example.choudry.electroniceventapproval.EventApprovalActivity">
 
-        />
+        <include
+            android:id="@+id/toolBarEventApproval"
+            layout="@layout/tool_bar_event_apporoval">
 
-    <EditText
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_margin="@dimen/_5sdp"
-        android:background="@drawable/border_edit"
-        android:drawableRight="@drawable/edit"
-        android:gravity="start"
-        android:hint="description"
-        android:padding="5dp" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:padding="@dimen/_8sdp">
+        </include>
 
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@drawable/border_edit"
+            android:drawableRight="@drawable/edit"
+            android:gravity="start"
+            android:hint="title"
+            android:padding="5dp"
+
+            />
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@drawable/border_edit"
+            android:drawableRight="@drawable/edit"
+            android:gravity="start"
+            android:hint="description"
+            android:padding="5dp" />
 
         <ImageView
             android:id="@+id/iv_event"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_marginTop="2dp"
-            android:src="@drawable/image"
+            android:src="@drawable/image" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_8sdp">
 
 
-            />
+            <ImageButton
+                android:id="@+id/btn_uploadImage"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/upload" />
 
-        <ImageButton
-            android:id="@+id/btn_uploadImage"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/upload"
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/button_states"
+                android:text="Submit"
+                android:textColor="@color/colorWhite" />
 
-            />
-
-    </RelativeLayout>
-
-
-    <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/button_states"
-        android:text="Submit"
-        android:textColor="@color/colorWhite"
-
-        />
+        </RelativeLayout>
 
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

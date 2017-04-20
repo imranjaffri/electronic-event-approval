@@ -1,20 +1,24 @@
 package com.example.choudry.electroniceventapproval;
 
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
-public class ResultActivity extends AppCompatActivity {
+import com.example.choudry.electroniceventapproval.fragments.ResultsLoadListener;
+import com.example.choudry.electroniceventapproval.fragments.ViewPagerAdapter;
 
-    private TextView singer_first_result;
-    private TextView singer_second_result;
-    private TextView vote_singer_first;
-    private TextView vote_singer_sencond;
+public class ResultActivity extends AppCompatActivity implements ResultsLoadListener {
+
+
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private ProgressDialog pDialog;
+
+    private int dataLoadSensor = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,36 +26,27 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_result);
+        setTitleColor(getResources().getColor(R.color.colorWhite));
+
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        singer_first_result = (TextView) findViewById(R.id.singer_first_result);
-        singer_second_result = (TextView) findViewById(R.id.singer_second_result);
-        vote_singer_first = (TextView) findViewById(R.id.vote_singer_first);
-        vote_singer_sencond = (TextView) findViewById(R.id.vote_singer_second);
+        ActionBar actionBar = getSupportActionBar();
 
-        // Getting fonts...
-        Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
-        Typeface simple_font = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle("Results");
+        actionBar.setHomeAsUpIndicator(R.drawable.back);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        // Applying fonts...
-        singer_first_result.setTypeface(simple_font);
-        singer_second_result.setTypeface(simple_font);
-        vote_singer_first.setTypeface(simple_font);
-        vote_singer_sencond.setTypeface(simple_font);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
+        pDialog = new ProgressDialog(ResultActivity.this, R.style.AppCompatAlertDialogStyle);
+        pDialog.setMessage("Fetching...");
+        pDialog.show();
 
-        ImageButton backBtn = (ImageButton) findViewById(R.id.back_btn_result);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent backIntent = new Intent(ResultActivity.this, ThreecategoryActivity.class);
-//                startActivity(backIntent);
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-
-            }
-        });
 
     }
 
@@ -60,5 +55,14 @@ public class ResultActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
+
+
+    @Override
+    public void onLoadSuccessful(int sender) {
+
+        if (dataLoadSensor == 0)
+            dataLoadSensor += 1;
+        else pDialog.dismiss();
     }
 }

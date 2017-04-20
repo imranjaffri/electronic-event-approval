@@ -3,9 +3,8 @@ package com.example.choudry.electroniceventapproval;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,22 +13,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.StringRequest;
-import com.example.choudry.electroniceventapproval.api.CallPostAPI;
+import com.example.choudry.electroniceventapproval.api.PostAPIRequest;
 import com.example.choudry.electroniceventapproval.app.AppController;
-import com.example.choudry.electroniceventapproval.utils.CommonUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity implements CallPostAPI.ResponseHandler {
+public class RegisterActivity extends AppCompatActivity implements PostAPIRequest.ResponseHandler {
 
     private static final String TAG = RegisterActivity.class.getName();
     private EditText email;
@@ -100,171 +90,70 @@ public class RegisterActivity extends AppCompatActivity implements CallPostAPI.R
 
                 if (user_email.equals("") && user_password.equals("") && user_comfirm_password.equals("")) {
 
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "Please Enter the Credentials", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
-
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "Please Enter the Credentials");
 
                 } else if (user_email.equals("") && !user_password.equals("") && !user_comfirm_password.equals("")) {
 
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "please Enter a Email", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "please Enter a Email");
 
                 } else if (user_password.equals("") && user_comfirm_password.equals("") && !user_email.matches(emailPattern)) {
 
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "Please Enter a Valid Email", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "Please Enter a Valid Email");
 
                 } else if (!user_password.equals("") && user_comfirm_password.equals("") && !user_email.matches(emailPattern)) {
 
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "Please Enter a Valid Email", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "Please Enter a Valid Email");
 
                 } else if (user_password.equals("") && !user_comfirm_password.equals("") && !user_email.matches(emailPattern)) {
 
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "Please Enter a Valid Email", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "Please Enter a Valid Email");
 
                 } else if (!user_password.equals("") && !user_comfirm_password.equals("") && !user_email.matches(emailPattern)) {
 
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "Please Enter a Valid Email", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "Please Enter a Valid Email");
 
                 } else if (!user_email.equals("") && user_comfirm_password.equals("") && user_password.equals("")) {
 
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "please Enter the Password", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
-
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "please Enter the Password");
 
                 } else if (!user_email.equals("") && !user_comfirm_password.equals("") && user_password.equals("")) {
 
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "please Enter the Password", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
-
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "please Enter the Password");
 
                 } else if (!user_email.equals("") && !user_password.equals("") && user_comfirm_password.equals("")) {
 
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "please Enter Confirm Password", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "please Enter Confirm Password");
 
                 } else if (!user_email.equals("") && !user_password.equals("") && !user_comfirm_password.matches(user_password)) {
 
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "Password does not matches", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "Password does not matches");
 
                 } else if (!user_email.matches(emailPattern)) {
-
-                    Snackbar snackbar = Snackbar.make(signUpLayout, "Not Valid Email", Snackbar.LENGTH_SHORT);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setPadding(20, 0, 0, 0);
-                    snackbar.show();
+                    AppController.showSnackBar(RegisterActivity.this, signUpLayout, "Not Valid Email");
                 } else {
 
-                    // Api Call......
+                    String url = "http://s5technology.com/demo/student/api/user/signup";// Api Call......
 
-                    String url = "http://s5technology.com/demo/student/api/user/signup";
-                    pDialog = new ProgressDialog(RegisterActivity.this, R.style.AppCompatAlertDialogStyle);
-                    pDialog.setMessage("Signing Up..");
-                    pDialog.show();
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put("email", user_email);
+                    map.put("password", user_password);
+                    map.put("type", "0");
 
-                    StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+                    new PostAPIRequest(RegisterActivity.this, url, map, new PostAPIRequest.ResponseHandler() {
                         @Override
                         public void onResponse(String response) {
-                            Log.d(TAG, response);
-                            pDialog.hide();
-
-                            JSONObject reader = null;
-
-                            try {
-                                reader = new JSONObject(response);
-
-                                String status = reader.getString("status");
-                                String message = reader.getString("message");
-
-                                if (status.equals("true")) {
-                                    CommonUtils.showToast(message, RegisterActivity.this);
-
-
-                                } else if (status.equals("false")) {
-                                    CommonUtils.showToast(message, RegisterActivity.this);
-                                }
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
+                            Toast.makeText(getApplicationContext(), "You have successfully Register, please login to continue", Toast.LENGTH_LONG).show();
+                            Log.v("Response", response);
+                            finish();
                         }
-                    }, new Response.ErrorListener() {
+
                         @Override
-                        public void onErrorResponse(VolleyError error) {
-                            VolleyLog.d(TAG, "Error: " + error.getMessage());
-                            Log.d(TAG, "" + error.getMessage() + "," + error.toString());
-
-                            CommonUtils.showToast(error.toString(), RegisterActivity.this);
+                        public void onError(String error) {
+                            AppController.showSnackBar(RegisterActivity.this, signUpLayout, error);
                         }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() {
-                            Map<String, String> map = new HashMap<String, String>();
-
-
-                            map.put("email", user_email);
-                            map.put("password", user_password);
-                            map.put("type", "0");
-
-
-                            return map;
-                        }
-
-                    };
-
-                    AppController.getInstance().addToRequestQueue(sr);
-
+                    }).initiate();
                 }
-
-
             }
 
 
