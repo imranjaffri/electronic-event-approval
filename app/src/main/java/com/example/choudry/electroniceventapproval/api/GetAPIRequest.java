@@ -70,7 +70,6 @@ public class GetAPIRequest {
 
     public interface ResponseHandler {
         void onResponse(String response);
-
         void onError(String error);
     }
 }

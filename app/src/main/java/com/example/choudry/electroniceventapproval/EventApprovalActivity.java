@@ -1,12 +1,20 @@
 package com.example.choudry.electroniceventapproval;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,10 +42,14 @@ import com.example.choudry.electroniceventapproval.volley.VolleySingleton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,10 +107,34 @@ public class EventApprovalActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 if (description.getText().toString().equals("") || title.getText().toString().equals("") || selectedImage == null) {
                     AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "Please add values to field");
                 } else {
-                    sendForApproval();
+//                    sendForApproval();
+
+                    pDialog = new ProgressDialog(EventApprovalActivity.this, R.style.AppCompatAlertDialogStyle);
+                    pDialog.setMessage("Submitting...");
+                    pDialog.show();
+
+                    try {
+                        new Task_finder().execute(getFilePath(EventApprovalActivity.this, selectedImage));
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+//                    new Thread(new Runnable() {
+//                        public void run() {
+//
+//                            try {
+////                                uploadFile(getFilePath(EventApprovalActivity.this, selectedImage));
+//                                new Task_finder().execute(getFilePath(EventApprovalActivity.this, selectedImage));
+//                            } catch (URISyntaxException e) {
+//                                e.printStackTrace();
+//                            }
+////                            uploadFile(getRealPathFromURI(selectedImage));
+//
+//                        }
+//                    }).start();
                 }
             }
         });
@@ -157,10 +193,185 @@ public class EventApprovalActivity extends AppCompatActivity {
     }
 
 
-    public int uploadFile(String sourceFileUri) {
+    @SuppressLint("NewApi")
+    public static String getFilePath(Context context, Uri uri) throws URISyntaxException {
+        String selection = null;
+        String[] selectionArgs = null;
+        // Uri is different in versions after KITKAT (Android 4.4), we need to
+        if (Build.VERSION.SDK_INT >= 19 && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                return Environment.getExternalStorageDirectory() + "/" + split[1];
+            } else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                uri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+            } else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if ("image".equals(type)) {
+                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                selection = "_id=?";
+                selectionArgs = new String[]{
+                        split[1]
+                };
+            }
+        }
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = {
+                    MediaStore.Images.Media.DATA
+            };
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver()
+                        .query(uri, projection, selection, selectionArgs, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    public static String getFileNameByUri(Context context, Uri uri) {
+        String fileName = "unknown";//default fileName
+        Uri filePathUri = uri;
+        if (uri.getScheme().toString().compareTo("content") == 0) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);//Instead of "MediaStore.Images.Media.DATA" can be used "_data"
+                filePathUri = Uri.parse(cursor.getString(column_index));
+                fileName = filePathUri.getLastPathSegment().toString();
+            }
+        } else if (uri.getScheme().compareTo("file") == 0) {
+            fileName = filePathUri.getLastPathSegment().toString();
+        } else {
+            fileName = fileName + "_" + filePathUri.getLastPathSegment();
+        }
+        return fileName;
+    }
 
 
-        String fileName = sourceFileUri;
+    public class Task_finder extends AsyncTask<String, Void, Void> {
+        private final ProgressDialog dialog = new ProgressDialog(EventApprovalActivity.this);
+        private String reponse_data;
+
+
+        // can use UI thread here
+        protected void onPreExecute() {
+            this.dialog.setMessage("Loading...");
+            this.dialog.setCancelable(false);
+            this.dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            HttpURLConnection conn = null;
+            DataOutputStream dos = null;
+            DataInputStream inStream = null;
+            String existingFileName = params[0];
+            String lineEnd = "\r\n";
+            String twoHyphens = "--";
+            String boundary = "*****";
+            int bytesRead, bytesAvailable, bufferSize;
+            byte[] buffer;
+            int maxBufferSize = 1 * 1024 * 1024;
+            String urlString = "http://s5technology.com/demo/student/api/event/save";
+            try {
+                //------------------ CLIENT REQUEST
+                FileInputStream fileInputStream = new FileInputStream(new File(existingFileName));
+                // open a URL connection to the Servlet
+                URL url = new URL(urlString);
+                // Open a HTTP connection to the URL
+                conn = (HttpURLConnection) url.openConnection();
+                // Allow Inputs
+                conn.setDoInput(true);
+                // Allow Outputs
+                conn.setDoOutput(true);
+                // Don't use a cached copy.
+                conn.setUseCaches(false);
+                // Use a post method.
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                dos = new DataOutputStream(conn.getOutputStream());
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + "IMAGE_NAME" + "\"" + lineEnd); // uploaded_file_name is the Name of the File to be uploaded
+                dos.writeBytes(lineEnd);
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                buffer = new byte[bufferSize];
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                while (bytesRead > 0) {
+                    dos.write(buffer, 0, bufferSize);
+                    bytesAvailable = fileInputStream.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                }
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+                fileInputStream.close();
+                dos.flush();
+                dos.close();
+            } catch (MalformedURLException ex) {
+                Log.e("Debug", "error: " + ex.getMessage(), ex);
+            } catch (IOException ioe) {
+                Log.e("Debug", "error: " + ioe.getMessage(), ioe);
+            }
+            //------------------ read the SERVER RESPONSE
+            try {
+                inStream = new DataInputStream(conn.getInputStream());
+                String str;
+                while ((str = inStream.readLine()) != null) {
+                    Log.e("Debug", "Server Response " + str);
+                    reponse_data = str;
+                }
+                inStream.close();
+            } catch (IOException ioex) {
+                Log.e("Debug", "error: " + ioex.getMessage(), ioex);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+
+            if (this.dialog.isShowing()) {
+                this.dialog.dismiss();
+            }
+        }
+    }
+
+
+    public void uploadFile(String sourceFileUri) {
+
+
+        String fileName = "Name Image";
 
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
@@ -170,32 +381,22 @@ public class EventApprovalActivity extends AppCompatActivity {
         int bytesRead, bytesAvailable, bufferSize;
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
-        File sourceFile = new File(sourceFileUri);
+        File sourceFile = null;
+        sourceFile = new File(sourceFileUri);
+
 
         if (!sourceFile.isFile()) {
 
-            dialog.dismiss();
+            pDialog.dismiss();
+            AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "Source File not exist ");
 
-            Log.e("uploadFile", "Source File not exist :"
-                    +uploadFilePath + "" + uploadFileName);
-
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    messageText.setText("Source File not exist :"
-                            +uploadFilePath + "" + uploadFileName);
-                }
-            });
-
-            return 0;
-
-        }
-        else
-        {
+        } else {
+            int serverResponseCode;
             try {
 
                 // open a URL connection to the Servlet
                 FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                URL url = new URL(upLoadServerUri);
+                URL url = new URL("http://s5technology.com/demo/student/api/event/save");
 
                 // Open a HTTP  connection to  the URL
                 conn = (HttpURLConnection) url.openConnection();
@@ -211,10 +412,10 @@ public class EventApprovalActivity extends AppCompatActivity {
                 dos = new DataOutputStream(conn.getOutputStream());
 
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name="uploaded_file";filename=""
-                                + fileName + """ + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
+                        + fileName + "\"" + lineEnd);
 
-                        dos.writeBytes(lineEnd);
+                dos.writeBytes(lineEnd);
 
                 // create a buffer of  maximum size
                 bytesAvailable = fileInputStream.available();
@@ -240,26 +441,37 @@ public class EventApprovalActivity extends AppCompatActivity {
 
                 // Responses from the server (code and message)
                 serverResponseCode = conn.getResponseCode();
-                String serverResponseMessage = conn.getResponseMessage();
+                String resultResponse = conn.getResponseMessage();
 
                 Log.i("uploadFile", "HTTP Response is : "
-                        + serverResponseMessage + ": " + serverResponseCode);
+                        + resultResponse + ": " + serverResponseCode);
 
-                if(serverResponseCode == 200){
+                if (serverResponseCode == 200) {
 
                     runOnUiThread(new Runnable() {
                         public void run() {
 
-                            String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
-                                    +" http://www.androidexample.com/media/uploads/"
-                                    +uploadFileName;
-
-                            messageText.setText(msg);
-                            Toast.makeText(UploadToServer.this, "File Upload Complete.",
-                                    Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
+                try {
+                    JSONObject obj = new JSONObject(resultResponse);
+                    if (obj.getString("status").equals("true"))
+                        AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "you have successfully sent application for approval");
+                    else
+                        AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "Error occure please try again");
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 3000);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                pDialog.dismiss();
 
                 //close the streams //
                 fileInputStream.close();
@@ -268,43 +480,23 @@ public class EventApprovalActivity extends AppCompatActivity {
 
             } catch (MalformedURLException ex) {
 
-                dialog.dismiss();
+                pDialog.dismiss();
                 ex.printStackTrace();
-
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        messageText.setText("MalformedURLException Exception : check script url.");
-                        Toast.makeText(UploadToServer.this, "MalformedURLException",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
 
                 Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
             } catch (Exception e) {
 
-                dialog.dismiss();
+                pDialog.dismiss();
                 e.printStackTrace();
-
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        messageText.setText("Got Exception : see logcat ");
-                        Toast.makeText(UploadToServer.this, "Got Exception : see logcat ",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Log.e("Upload file to server Exception", "Exception : "
-                        + e.getMessage(), e);
             }
-            dialog.dismiss();
-            return serverResponseCode;
+            pDialog.dismiss();
 
-        } // End else block
+        }
+    }
 
 
     private void sendForApproval() {
-        pDialog = new ProgressDialog(EventApprovalActivity.this, R.style.AppCompatAlertDialogStyle);
-        pDialog.setMessage("Submitting...");
-        pDialog.show();
+
         String url = "http://s5technology.com/demo/student/api/event/save";
         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
             @Override
@@ -390,7 +582,7 @@ public class EventApprovalActivity extends AppCompatActivity {
 
                 byte[] arr = CommonUtils.convertImageToByte(selectedImage, EventApprovalActivity.this);
 
-                params.put("image", new DataPart(CommonUtils.getImageName(selectedImage, EventApprovalActivity.this),arr , mimeType));
+                params.put("image", new DataPart(CommonUtils.getImageName(selectedImage, EventApprovalActivity.this), arr, mimeType));
 
                 return params;
             }
