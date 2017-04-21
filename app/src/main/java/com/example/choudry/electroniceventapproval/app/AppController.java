@@ -79,4 +79,103 @@ public class AppController extends Application {
         textView.setPadding(20, 0, 0, 0);
         snackbar.show();
     }
+
+//    private void sendForApproval() {
+//
+//        String url = "http://s5technology.com/demo/student/api/event/save";
+//        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
+//            @Override
+//            public void onResponse(NetworkResponse response) {
+//                String resultResponse = new String(response.data);
+//                try {
+//                    JSONObject obj = new JSONObject(resultResponse);
+//                    if (obj.getString("status").equals("true"))
+//                        AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "you have successfully sent application for approval");
+//                    else
+//                        AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "Error occure please try again");
+//
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            finish();
+//                        }
+//                    }, 3000);
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                pDialog.dismiss();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                NetworkResponse networkResponse = error.networkResponse;
+//                String errorMessage = "Unknown error";
+//                if (networkResponse == null) {
+//                    if (error.getClass().equals(TimeoutError.class)) {
+//                        errorMessage = "Request timeout";
+//                    } else if (error.getClass().equals(NoConnectionError.class)) {
+//                        errorMessage = "Failed to connect server";
+//                    }
+//                } else {
+//                    String result = new String(networkResponse.data);
+//                    try {
+//                        JSONObject response = new JSONObject(result);
+//                        String status = response.getString("status");
+//                        String message = response.getString("message");
+//
+//                        Log.e("Error Status", status);
+//                        Log.e("Error Message", message);
+//
+//                        if (networkResponse.statusCode == 404) {
+//                            errorMessage = "Resource not found";
+//                        } else if (networkResponse.statusCode == 401) {
+//                            errorMessage = message + " Please login again";
+//                        } else if (networkResponse.statusCode == 400) {
+//                            errorMessage = message + " Check your inputs";
+//                        } else if (networkResponse.statusCode == 500) {
+//                            errorMessage = message + " Something is getting wrong";
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                Log.i("Error", errorMessage);
+//                error.printStackTrace();
+//
+//                AppController.showSnackBar(EventApprovalActivity.this, mainLayout, errorMessage);
+//            }
+//        }) {
+//
+//
+//            @Override
+//            protected Map<String, String> getParams() {
+//
+//                Map<String, String> params = new HashMap<>();
+//                params.put("user_id", SharedPreferenceUtils.getLoggedUser(EventApprovalActivity.this).getUser_id());
+//                params.put("title", title.getText().toString());
+//                params.put("description", description.getText().toString());
+//
+//
+//                return params;
+//            }
+//
+//            @Override
+//            protected Map<String, DataPart> getByteData() {
+//                Map<String, DataPart> params = new HashMap<>();
+//
+//
+//                byte[] arr = CommonUtils.convertImageToByte(selectedImage, EventApprovalActivity.this);
+//
+//                params.put("image", new DataPart(CommonUtils.getImageName(selectedImage, EventApprovalActivity.this), arr, mimeType));
+//
+//                return params;
+//            }
+//        };
+//        multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+//                0,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
+//    }
 }

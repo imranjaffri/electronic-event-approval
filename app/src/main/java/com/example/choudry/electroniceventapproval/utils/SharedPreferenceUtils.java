@@ -36,7 +36,7 @@ public class SharedPreferenceUtils {
         SharedPreferences preferences = getPreference(activity);
         User user = new User();
         user.setEmail(preferences.getString(USER_EMAIL, null));
-        user.setUser_id(preferences.getString(USER_ID, null));
+        user.setUser_id(preferences.getString(USER_ID, "00"));
         user.setType(preferences.getString(USER_TYPE, null));
         return user;
     }

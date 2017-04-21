@@ -21,7 +21,11 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".ThreecategoryActivity"></activity>
         <activity android:name=".EventApprovalActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".ReceivedActivity" />
@@ -34,11 +38,7 @@
             android:name=".PollsListActivity"
             android:label=""
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

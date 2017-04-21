@@ -12,12 +12,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,32 +26,23 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
-import com.android.volley.NoConnectionError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
+import com.example.choudry.electroniceventapproval.api.PostAPIRequest;
 import com.example.choudry.electroniceventapproval.app.AppController;
 import com.example.choudry.electroniceventapproval.utils.CommonUtils;
 import com.example.choudry.electroniceventapproval.utils.SharedPreferenceUtils;
-import com.example.choudry.electroniceventapproval.volley.VolleyMultipartRequest;
-import com.example.choudry.electroniceventapproval.volley.VolleySingleton;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class EventApprovalActivity extends AppCompatActivity {
@@ -75,6 +66,7 @@ public class EventApprovalActivity extends AppCompatActivity {
     private Uri selectedImage;
 
     private String mimeType = "image/*";
+    private String TAG = EventApprovalActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,30 +103,14 @@ public class EventApprovalActivity extends AppCompatActivity {
                 if (description.getText().toString().equals("") || title.getText().toString().equals("") || selectedImage == null) {
                     AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "Please add values to field");
                 } else {
-//                    sendForApproval();
+//                    sendForApproval()
+                    sendForApproval();
 
-                    pDialog = new ProgressDialog(EventApprovalActivity.this, R.style.AppCompatAlertDialogStyle);
-                    pDialog.setMessage("Submitting...");
-                    pDialog.show();
-
-                    try {
-                        new Task_finder().execute(getFilePath(EventApprovalActivity.this, selectedImage));
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    }
-//                    new Thread(new Runnable() {
-//                        public void run() {
-//
-//                            try {
-////                                uploadFile(getFilePath(EventApprovalActivity.this, selectedImage));
-//                                new Task_finder().execute(getFilePath(EventApprovalActivity.this, selectedImage));
-//                            } catch (URISyntaxException e) {
-//                                e.printStackTrace();
-//                            }
-////                            uploadFile(getRealPathFromURI(selectedImage));
-//
-//                        }
-//                    }).start();
+//                    try {
+//                        new Task_finder().execute(getFilePath(EventApprovalActivity.this, selectedImage));
+//                    } catch (URISyntaxException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         });
@@ -168,6 +144,31 @@ public class EventApprovalActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    private void sendForApproval() {
+
+
+        byte[] byteArrayImage = CommonUtils.convertImageToByte(selectedImage, EventApprovalActivity.this);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id", SharedPreferenceUtils.getLoggedUser(EventApprovalActivity.this).getUser_id());
+        params.put("title", title.getText().toString());
+        params.put("description", description.getText().toString());
+        params.put("image", Base64.encodeToString(byteArrayImage, Base64.DEFAULT));
+
+        new PostAPIRequest(EventApprovalActivity.this, "http://s5technology.com/demo/student/api/event/saveb", params, new PostAPIRequest.ResponseHandler() {
+            @Override
+            public void onResponse(String response) {
+                Log.v("Response", response);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.v("Response", error);
+            }
+        }).initiate();
     }
 
     @Override
@@ -256,343 +257,193 @@ public class EventApprovalActivity extends AppCompatActivity {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    public static String getFileNameByUri(Context context, Uri uri) {
-        String fileName = "unknown";//default fileName
-        Uri filePathUri = uri;
-        if (uri.getScheme().toString().compareTo("content") == 0) {
-            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-            if (cursor.moveToFirst()) {
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);//Instead of "MediaStore.Images.Media.DATA" can be used "_data"
-                filePathUri = Uri.parse(cursor.getString(column_index));
-                fileName = filePathUri.getLastPathSegment().toString();
-            }
-        } else if (uri.getScheme().compareTo("file") == 0) {
-            fileName = filePathUri.getLastPathSegment().toString();
-        } else {
-            fileName = fileName + "_" + filePathUri.getLastPathSegment();
-        }
-        return fileName;
-    }
 
-
-    public class Task_finder extends AsyncTask<String, Void, Void> {
-        private final ProgressDialog dialog = new ProgressDialog(EventApprovalActivity.this);
-        private String reponse_data;
+    public class Task_finder extends AsyncTask<String, Void, String> {
 
 
         // can use UI thread here
         protected void onPreExecute() {
-            this.dialog.setMessage("Loading...");
-            this.dialog.setCancelable(false);
-            this.dialog.show();
         }
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected String doInBackground(String... param) {
             // TODO Auto-generated method stub
-            HttpURLConnection conn = null;
-            DataOutputStream dos = null;
-            DataInputStream inStream = null;
-            String existingFileName = params[0];
-            String lineEnd = "\r\n";
-            String twoHyphens = "--";
-            String boundary = "*****";
-            int bytesRead, bytesAvailable, bufferSize;
-            byte[] buffer;
-            int maxBufferSize = 1 * 1024 * 1024;
-            String urlString = "http://s5technology.com/demo/student/api/event/save";
-            try {
-                //------------------ CLIENT REQUEST
-                FileInputStream fileInputStream = new FileInputStream(new File(existingFileName));
-                // open a URL connection to the Servlet
-                URL url = new URL(urlString);
-                // Open a HTTP connection to the URL
-                conn = (HttpURLConnection) url.openConnection();
-                // Allow Inputs
-                conn.setDoInput(true);
-                // Allow Outputs
-                conn.setDoOutput(true);
-                // Don't use a cached copy.
-                conn.setUseCaches(false);
-                // Use a post method.
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                dos = new DataOutputStream(conn.getOutputStream());
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + "IMAGE_NAME" + "\"" + lineEnd); // uploaded_file_name is the Name of the File to be uploaded
-                dos.writeBytes(lineEnd);
-                bytesAvailable = fileInputStream.available();
-                bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                buffer = new byte[bufferSize];
-                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-                while (bytesRead > 0) {
-                    dos.write(buffer, 0, bufferSize);
-                    bytesAvailable = fileInputStream.available();
-                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-                }
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-                fileInputStream.close();
-                dos.flush();
-                dos.close();
-            } catch (MalformedURLException ex) {
-                Log.e("Debug", "error: " + ex.getMessage(), ex);
-            } catch (IOException ioe) {
-                Log.e("Debug", "error: " + ioe.getMessage(), ioe);
-            }
-            //------------------ read the SERVER RESPONSE
-            try {
-                inStream = new DataInputStream(conn.getInputStream());
-                String str;
-                while ((str = inStream.readLine()) != null) {
-                    Log.e("Debug", "Server Response " + str);
-                    reponse_data = str;
-                }
-                inStream.close();
-            } catch (IOException ioex) {
-                Log.e("Debug", "error: " + ioex.getMessage(), ioex);
-            }
-            return null;
+
+            //setup params
+            Map<String, String> params = new HashMap<String, String>(2);
+            params.put("user_id", "12");
+            params.put("title", "its mine title");
+            params.put("description", "is decription here");
+
+            return multipartRequest("http://s5technology.com/demo/student/api/event/save", params, param[0], "image", "image/png");
+
+
+//            MultipartUtility multipart = null;
+//            try {
+//                multipart = new MultipartUtility("http://s5technology.com/demo/student/api/event/save", "UTF-8");
+//
+//
+//                // In your case you are not adding form data so ignore this
+//                /*This is to add parameter values */
+////                for (int i = 0; i < myFormDataArray.size(); i++) {
+////                    multipart.addFormField(myFormDataArray.get(i).getParamName(),
+////                            myFormDataArray.get(i).getParamValue());
+////                }
+//
+//                multipart.addFormField("user_id", "12");
+//                multipart.addFormField("title", "its mine title");
+//                multipart.addFormField("description", "is decription here");
+//
+//
+////add your file here.
+//                /*This is to add file content*/
+//                multipart.addFilePart("image",
+//                        new File(param[0]));
+//
+//                List<String> response = multipart.finish();
+//                Log.e(TAG, "SERVER REPLIED:");
+//                for (String line : response) {
+//                    Log.e(TAG, "Upload Files Response:::" + line);
+//// get your server response here.
+//                }
+//                Log.e(TAG, "SERVER REPLIED:");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(String result) {
 
-            if (this.dialog.isShowing()) {
-                this.dialog.dismiss();
+            if (pDialog.isShowing()) {
+                pDialog.dismiss();
             }
         }
     }
 
+    public String multipartRequest(String urlTo, Map<String, String> parmas, String filepath, String filefield, String fileMimeType) {
+        HttpURLConnection connection = null;
+        DataOutputStream outputStream = null;
+        InputStream inputStream = null;
 
-    public void uploadFile(String sourceFileUri) {
-
-
-        String fileName = "Name Image";
-
-        HttpURLConnection conn = null;
-        DataOutputStream dos = null;
-        String lineEnd = "\r\n";
         String twoHyphens = "--";
-        String boundary = "*****";
+        String boundary = "*****" + Long.toString(System.currentTimeMillis()) + "*****";
+        String lineEnd = "\r\n";
+
+        String result = "";
+
         int bytesRead, bytesAvailable, bufferSize;
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
-        File sourceFile = null;
-        sourceFile = new File(sourceFileUri);
 
+        String[] q = filepath.split("/");
+        int idx = q.length - 1;
 
-        if (!sourceFile.isFile()) {
+        try {
+            File file = new File(filepath);
+            FileInputStream fileInputStream = new FileInputStream(file);
 
-            pDialog.dismiss();
-            AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "Source File not exist ");
+            URL url = new URL(urlTo);
+            connection = (HttpURLConnection) url.openConnection();
 
-        } else {
-            int serverResponseCode;
-            try {
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
 
-                // open a URL connection to the Servlet
-                FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                URL url = new URL("http://s5technology.com/demo/student/api/event/save");
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Connection", "Keep-Alive");
+            connection.setRequestProperty("User-Agent", "Android Multipart HTTP Client 1.0");
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+            connection.setRequestProperty("Accept", "*/*");
 
-                // Open a HTTP  connection to  the URL
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setDoInput(true); // Allow Inputs
-                conn.setDoOutput(true); // Allow Outputs
-                conn.setUseCaches(false); // Don't use a Cached Copy
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                conn.setRequestProperty("uploaded_file", fileName);
+            outputStream = new DataOutputStream(connection.getOutputStream());
+            outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+            outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + q[idx] + "\"" + lineEnd);
+            outputStream.writeBytes("Content-Type: " + fileMimeType + lineEnd);
+            outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
 
-                dos = new DataOutputStream(conn.getOutputStream());
+            outputStream.writeBytes(lineEnd);
 
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
-                        + fileName + "\"" + lineEnd);
+            bytesAvailable = fileInputStream.available();
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            buffer = new byte[bufferSize];
 
-                dos.writeBytes(lineEnd);
-
-                // create a buffer of  maximum size
+            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            while (bytesRead > 0) {
+                outputStream.write(buffer, 0, bufferSize);
                 bytesAvailable = fileInputStream.available();
-
                 bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                buffer = new byte[bufferSize];
-
-                // read file and write it into form...
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            }
 
-                while (bytesRead > 0) {
+            outputStream.writeBytes(lineEnd);
 
-                    dos.write(buffer, 0, bufferSize);
-                    bytesAvailable = fileInputStream.available();
-                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            // Upload POST Data
+            Iterator<String> keys = parmas.keySet().iterator();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                String value = parmas.get(key);
 
-                }
+                outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+                outputStream.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"" + lineEnd);
+                outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
+                outputStream.writeBytes(lineEnd);
+                outputStream.writeBytes(value);
+                outputStream.writeBytes(lineEnd);
+            }
 
-                // send multipart form data necesssary after file data...
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+            outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
-                // Responses from the server (code and message)
-                serverResponseCode = conn.getResponseCode();
-                String resultResponse = conn.getResponseMessage();
 
-                Log.i("uploadFile", "HTTP Response is : "
-                        + resultResponse + ": " + serverResponseCode);
+            int statusCode = connection.getResponseCode();
 
-                if (serverResponseCode == 200) {
 
-                    runOnUiThread(new Runnable() {
-                        public void run() {
+            if (statusCode >= 200 && statusCode < 400) {
+                // Create an InputStream in order to extract the response object
+                inputStream = connection.getInputStream();
+            } else {
+                inputStream = connection.getErrorStream();
+            }
 
-                        }
-                    });
-                }
-                try {
-                    JSONObject obj = new JSONObject(resultResponse);
-                    if (obj.getString("status").equals("true"))
-                        AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "you have successfully sent application for approval");
-                    else
-                        AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "Error occure please try again");
+            result = this.convertStreamToString(inputStream);
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 3000);
+            fileInputStream.close();
+            inputStream.close();
+            outputStream.flush();
+            outputStream.close();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                pDialog.dismiss();
+            return result;
+        } catch (Exception e) {
+            Log.v("Error", e.toString());
+        }
 
-                //close the streams //
-                fileInputStream.close();
-                dos.flush();
-                dos.close();
+        return result;
+    }
 
-            } catch (MalformedURLException ex) {
+    private String convertStreamToString(InputStream is) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
 
-                pDialog.dismiss();
-                ex.printStackTrace();
-
-                Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
-            } catch (Exception e) {
-
-                pDialog.dismiss();
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            pDialog.dismiss();
-
         }
+        return sb.toString();
     }
+// see http://www.androidsnippets.com/multipart-http-requests
 
 
-    private void sendForApproval() {
-
-        String url = "http://s5technology.com/demo/student/api/event/save";
-        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
-            @Override
-            public void onResponse(NetworkResponse response) {
-                String resultResponse = new String(response.data);
-                try {
-                    JSONObject obj = new JSONObject(resultResponse);
-                    if (obj.getString("status").equals("true"))
-                        AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "you have successfully sent application for approval");
-                    else
-                        AppController.showSnackBar(EventApprovalActivity.this, mainLayout, "Error occure please try again");
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 3000);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                pDialog.dismiss();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                NetworkResponse networkResponse = error.networkResponse;
-                String errorMessage = "Unknown error";
-                if (networkResponse == null) {
-                    if (error.getClass().equals(TimeoutError.class)) {
-                        errorMessage = "Request timeout";
-                    } else if (error.getClass().equals(NoConnectionError.class)) {
-                        errorMessage = "Failed to connect server";
-                    }
-                } else {
-                    String result = new String(networkResponse.data);
-                    try {
-                        JSONObject response = new JSONObject(result);
-                        String status = response.getString("status");
-                        String message = response.getString("message");
-
-                        Log.e("Error Status", status);
-                        Log.e("Error Message", message);
-
-                        if (networkResponse.statusCode == 404) {
-                            errorMessage = "Resource not found";
-                        } else if (networkResponse.statusCode == 401) {
-                            errorMessage = message + " Please login again";
-                        } else if (networkResponse.statusCode == 400) {
-                            errorMessage = message + " Check your inputs";
-                        } else if (networkResponse.statusCode == 500) {
-                            errorMessage = message + " Something is getting wrong";
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                Log.i("Error", errorMessage);
-                error.printStackTrace();
-
-                AppController.showSnackBar(EventApprovalActivity.this, mainLayout, errorMessage);
-            }
-        }) {
-
-
-            @Override
-            protected Map<String, String> getParams() {
-
-                Map<String, String> params = new HashMap<>();
-                params.put("user_id", SharedPreferenceUtils.getLoggedUser(EventApprovalActivity.this).getUser_id());
-                params.put("title", title.getText().toString());
-                params.put("description", description.getText().toString());
-
-
-                return params;
-            }
-
-            @Override
-            protected Map<String, DataPart> getByteData() {
-                Map<String, DataPart> params = new HashMap<>();
-
-
-                byte[] arr = CommonUtils.convertImageToByte(selectedImage, EventApprovalActivity.this);
-
-                params.put("image", new DataPart(CommonUtils.getImageName(selectedImage, EventApprovalActivity.this), arr, mimeType));
-
-                return params;
-            }
-        };
-        multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                0,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
-    }
 }
 
 
