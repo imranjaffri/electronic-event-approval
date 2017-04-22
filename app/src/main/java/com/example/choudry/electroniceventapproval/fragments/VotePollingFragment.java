@@ -58,18 +58,17 @@ public class VotePollingFragment extends Fragment {
                 PollsList pollsList = new Gson().fromJson(response, PollsList.class);
                 adapter = new MoviesAdapter(pollsList.getData());
                 layoutManager = new LinearLayoutManager(getActivity());
+                layoutManager.setReverseLayout(true);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(adapter);
-
-
 
 
             }
 
             @Override
             public void onError(String error) {
-                Toast.makeText(getActivity(), "Error Occure while loading", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Error Occur while loading", Toast.LENGTH_LONG).show();
                 loadListener.onLoadSuccessful(0);
             }
         }).initiate();

@@ -28,6 +28,9 @@ public class VoteCastActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
+
+
         cast_vote_btn = (Button) findViewById(R.id.cast_vote_btn);
         mainLayout = (LinearLayout) findViewById(R.id.mainLayoutVote);
 

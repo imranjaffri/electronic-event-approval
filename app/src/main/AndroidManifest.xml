@@ -37,14 +37,15 @@
             android:label="Results">
 
         </activity>
-        <activity android:name=".VoteCastActivity" >
-
+        <activity android:name=".VoteCastActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
         <activity android:name=".CreatePollActivity">
 
