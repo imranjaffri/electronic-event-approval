@@ -1,5 +1,6 @@
 package com.example.choudry.electroniceventapproval.adapters;
 
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,17 @@ import android.widget.TextView;
 
 import com.example.choudry.electroniceventapproval.R;
 import com.example.choudry.electroniceventapproval.data.polls.PollsData;
+import com.example.choudry.electroniceventapproval.data.polls.PollsList;
 
 import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHolder> {
 
     private List<PollsData> moviesList;
+
+    public MoviesAdapter(FragmentActivity activity, PollsList pollsList) {
+
+    }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView singer_1, singer_2, Singer_1_vote, Singer_2_vote;

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,19 +14,29 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.choudry.electroniceventapproval.R;
+import com.example.choudry.electroniceventapproval.adapters.ApplicationAdapter;
 import com.example.choudry.electroniceventapproval.api.GetAPIRequest;
+import com.example.choudry.electroniceventapproval.data.application.ApplicationList;
+import com.google.gson.Gson;
 
 public class ApplicationFragment extends Fragment {
 
 
     private ResultsLoadListener loadListener;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
+    private ApplicationAdapter adapter;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(
-                R.layout.fragment_vote_polling, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_vote_polling, container, false);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+
+        return rootView;
+
+
     }
 
     @Override
@@ -37,7 +50,16 @@ public class ApplicationFragment extends Fragment {
             public void onResponse(String response) {
                 Log.v("Response", response);
                 loadListener.onLoadSuccessful(0);
+
+                ApplicationList applicationList = new Gson().fromJson(response, ApplicationList.class);
+                adapter = new ApplicationAdapter(applicationList.getData());
+                layoutManager = new LinearLayoutManager(getActivity());
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(adapter);
+
             }
+
             @Override
             public void onError(String error) {
                 Toast.makeText(getActivity(), "Error Occure while loading", Toast.LENGTH_LONG).show();
