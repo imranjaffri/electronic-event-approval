@@ -45,6 +45,10 @@
         <activity
             android:name=".ReceivedActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".AddUserActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ResultActivity"
             android:label="Results"
@@ -66,7 +70,7 @@
             android:name=".PollsListActivity"
             android:label=""
             android:screenOrientation="portrait">
-            
+
         </activity>
         <activity
             android:name=".ApplicationList"

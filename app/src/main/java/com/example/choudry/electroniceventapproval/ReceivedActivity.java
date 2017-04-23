@@ -26,6 +26,7 @@ public class ReceivedActivity extends AppCompatActivity {
     private String disc_text_received;
     private ApplicationData appData;
     private ImageView image_received;
+    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +44,23 @@ public class ReceivedActivity extends AppCompatActivity {
         image_received = (ImageView) findViewById(R.id.iv_received);
 
 
-
         appData = getIntent().getParcelableExtra("application_data");
         Picasso.with(ReceivedActivity.this).load(appData.getImage() + ".png").into(image_received);
 
+        findViewById(R.id.approved).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                status = "Approved";
+            }
+        });
+
+        findViewById(R.id.disApprove).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                status = "Not Approved";
+            }
+        });
 
         // Getting fonts...
         Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
@@ -57,12 +71,15 @@ public class ReceivedActivity extends AppCompatActivity {
         disApproveBtn.setTypeface(simple_font);
         discription.setTypeface(simple_font);
 
-        disc_text_received = discription.getText().toString();
-
         approveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apiCallForApproved();
+
+                if (!status.isEmpty()) {
+                    apiCallForApproved();
+                } else {
+                    CommonUtils.showToast("Please Press Approve or Reject", ReceivedActivity.this);
+                }
             }
         });
 
@@ -79,6 +96,8 @@ public class ReceivedActivity extends AppCompatActivity {
     private void apiCallForApproved() {
 
         String url = "http://s5technology.com/demo/student/api/event/update";// Api Call....
+
+        disc_text_received = discription.getText().toString();
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("id", appData.getEvent_id());
