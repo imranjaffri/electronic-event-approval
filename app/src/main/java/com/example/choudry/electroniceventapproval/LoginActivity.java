@@ -49,11 +49,11 @@ public class LoginActivity extends AppCompatActivity {
 
         email = (EditText) findViewById(R.id.et_mail_signIn);
 
-        email.setText("super@admin.com");
+//        email.setText("super@admin.com");
 
         password = (EditText) findViewById(R.id.et_pass_signIn);
 
-        password.setText("abc123");
+//        password.setText("abc123");
 
         textSignUp = (TextView) findViewById(R.id.tv_signUp);
         tite_text = (TextView) findViewById(R.id.title_text);
