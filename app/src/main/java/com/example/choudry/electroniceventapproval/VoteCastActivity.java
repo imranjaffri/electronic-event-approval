@@ -47,6 +47,7 @@ public class VoteCastActivity extends AppCompatActivity {
         radioButton = (RadioButton) findViewById(R.id.yesRadioBtn);
         radioButton1 = (RadioButton) findViewById(R.id.noRadioBtn);
 
+
         radioButton.setText(data.getSecond_nominee());
         radioButton1.setText(data.getFirst_nominee());
 

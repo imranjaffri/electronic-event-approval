@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
         email = (EditText) findViewById(R.id.et_mail_signIn);
 
-        email.setText("admin@admin.com");
+        email.setText("super@admin.com");
 
         password = (EditText) findViewById(R.id.et_pass_signIn);
 
@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                                 SharedPreferenceUtils.saveLoggedUser(LoginActivity.this, user);
                                 switch (user.getType()) {
                                     case "0":
-                                        startActivity(new Intent(LoginActivity.this, VoteCastActivity.class));
+                                        startActivity(new Intent(LoginActivity.this, PollsListActivity.class));
                                         finish();
                                         break;
                                     case "1":
@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                                         finish();
                                         break;
                                     default:
-                                        startActivity(new Intent(LoginActivity.this, ReceivedActivity.class));
+                                        startActivity(new Intent(LoginActivity.this, ApplicationList.class));
                                         finish();
                                         break;
                                 }

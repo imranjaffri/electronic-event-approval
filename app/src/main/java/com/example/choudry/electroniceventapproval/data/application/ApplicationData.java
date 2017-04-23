@@ -1,10 +1,13 @@
 package com.example.choudry.electroniceventapproval.data.application;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Choudry on 4/22/2017.
  */
 
-public class ApplicationData {
+public class ApplicationData implements Parcelable {
 
     private String created_date;
 
@@ -21,6 +24,29 @@ public class ApplicationData {
     private String event_id;
 
     private String remarks;
+
+    protected ApplicationData(Parcel in) {
+        created_date = in.readString();
+        title = in.readString();
+        updated_date = in.readString();
+        status = in.readString();
+        description = in.readString();
+        image = in.readString();
+        event_id = in.readString();
+        remarks = in.readString();
+    }
+
+    public static final Creator<ApplicationData> CREATOR = new Creator<ApplicationData>() {
+        @Override
+        public ApplicationData createFromParcel(Parcel in) {
+            return new ApplicationData(in);
+        }
+
+        @Override
+        public ApplicationData[] newArray(int size) {
+            return new ApplicationData[size];
+        }
+    };
 
     public String getCreated_date() {
         return created_date;
@@ -89,5 +115,22 @@ public class ApplicationData {
     @Override
     public String toString() {
         return "ClassPojo [created_date = " + created_date + ", title = " + title + ", updated_date = " + updated_date + ", status = " + status + ", description = " + description + ", image = " + image + ", event_id = " + event_id + ", remarks = " + remarks + "]";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(created_date);
+        dest.writeString(title);
+        dest.writeString(updated_date);
+        dest.writeString(status);
+        dest.writeString(description);
+        dest.writeString(image);
+        dest.writeString(event_id);
+        dest.writeString(remarks);
     }
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by Choudry on 4/22/2017.
  */
 
-public class ApplicationList {
+public class AppList {
 
     private String message;
 

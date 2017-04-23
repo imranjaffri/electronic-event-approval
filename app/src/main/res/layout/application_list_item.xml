@@ -6,6 +6,7 @@
     android:background="@color/colorAccent"
     android:orientation="horizontal"
     android:padding="@dimen/_5sdp"
+    android:id="@+id/liLayout_application"
     android:weightSum="100">
 
 

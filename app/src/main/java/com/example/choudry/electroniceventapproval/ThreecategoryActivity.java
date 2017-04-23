@@ -15,11 +15,14 @@ public class ThreecategoryActivity extends AppCompatActivity {
     ImageView image2;
     ImageView image3;
 
+    private ImageButton backBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_threecategory);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_categories);
         setSupportActionBar(toolbar);
@@ -33,14 +36,13 @@ public class ThreecategoryActivity extends AppCompatActivity {
         image2 = (ImageView) findViewById(R.id.voteCasting);
         image3 = (ImageView) findViewById(R.id.showResult);
 
-
-        ImageButton backBtn = (ImageButton) findViewById(R.id.back_btn_categories);
+        backBtn = (ImageButton) findViewById(R.id.back_btn_categories);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
 
             public void onClick(View v) {
                 finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+
 
             }
         });

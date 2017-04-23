@@ -21,13 +21,11 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ThreecategoryActivity"
@@ -58,18 +56,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/voteCast">
 
-
         </activity>
         <activity
             android:name=".CreatePollActivity"
             android:screenOrientation="portrait">
-
 
         </activity>
         <activity
             android:name=".PollsListActivity"
             android:label=""
             android:screenOrientation="portrait">
+            
+        </activity>
+        <activity
+            android:name=".ApplicationList"
+            android:theme="@style/AppTheme">
 
 
         </activity>
