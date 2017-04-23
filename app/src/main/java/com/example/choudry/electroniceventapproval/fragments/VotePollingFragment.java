@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.choudry.electroniceventapproval.R;
-import com.example.choudry.electroniceventapproval.adapters.MoviesAdapter;
+import com.example.choudry.electroniceventapproval.adapters.MoviesAdapterResult;
 import com.example.choudry.electroniceventapproval.api.GetAPIRequest;
 import com.example.choudry.electroniceventapproval.data.polls.PollsList;
 import com.google.gson.Gson;
@@ -25,7 +25,7 @@ public class VotePollingFragment extends Fragment {
     private ResultsLoadListener loadListener;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
-    private MoviesAdapter adapter;
+    private MoviesAdapterResult adapter;
 
     @Nullable
     @Override
@@ -56,7 +56,7 @@ public class VotePollingFragment extends Fragment {
 
 
                 PollsList pollsList = new Gson().fromJson(response, PollsList.class);
-                adapter = new MoviesAdapter(pollsList.getData());
+                adapter = new MoviesAdapterResult(pollsList.getData());
                 layoutManager = new LinearLayoutManager(getActivity());
                 layoutManager.setReverseLayout(true);
                 recyclerView.setLayoutManager(layoutManager);

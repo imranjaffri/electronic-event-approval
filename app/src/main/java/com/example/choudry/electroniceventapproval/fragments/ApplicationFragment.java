@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.choudry.electroniceventapproval.R;
-import com.example.choudry.electroniceventapproval.adapters.ApplicationAdapter;
+import com.example.choudry.electroniceventapproval.adapters.ApplicationAdapterResult;
 import com.example.choudry.electroniceventapproval.api.GetAPIRequest;
 import com.example.choudry.electroniceventapproval.data.application.AppList;
 import com.google.gson.Gson;
@@ -25,7 +25,7 @@ public class ApplicationFragment extends Fragment {
     private ResultsLoadListener loadListener;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
-    private ApplicationAdapter adapter;
+    private ApplicationAdapterResult adapter;
 
 
     @Nullable
@@ -52,7 +52,7 @@ public class ApplicationFragment extends Fragment {
                 loadListener.onLoadSuccessful(0);
 
                 AppList applicationList = new Gson().fromJson(response, AppList.class);
-                adapter = new ApplicationAdapter(applicationList.getData());
+                adapter = new ApplicationAdapterResult(applicationList.getData());
                 layoutManager = new LinearLayoutManager(getActivity());
                 layoutManager.setReverseLayout(true);
                 recyclerView.setLayoutManager(layoutManager);

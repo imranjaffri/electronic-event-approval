@@ -6,7 +6,7 @@
 
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_result"
+        android:id="@+id/toolbar_result_activity"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
