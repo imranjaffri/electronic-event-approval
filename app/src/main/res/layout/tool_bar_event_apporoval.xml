@@ -22,17 +22,7 @@
             android:background="@color/colorPrimary"
             android:src="@drawable/back" />
 
-        <ImageButton
-            android:id="@+id/notification_event_approval"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/_17sdp"
-            android:layout_marginLeft="@dimen/_17sdp"
-            android:layout_marginRight="@dimen/_17sdp"
-            android:background="@color/colorPrimary"
-            android:gravity="center_vertical"
-            android:src="@drawable/notification" />
+
 
 
     </android.support.v7.widget.Toolbar>

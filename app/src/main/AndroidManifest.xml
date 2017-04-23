@@ -18,26 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
-
-
-        </activity>
-        <activity android:name=".ThreecategoryActivity">
-
-        </activity>
-        <activity android:name=".EventApprovalActivity">
-
-        </activity>
-        <activity android:name=".RegisterActivity">
-
-        </activity>
-        <activity android:name=".ReceivedActivity" />
         <activity
-            android:name=".ResultActivity"
-            android:label="Results">
-
-        </activity>
-        <activity android:name=".VoteCastActivity">
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,9 +28,41 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+        </activity>
+        <activity
+            android:name=".ThreecategoryActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".CreatePollActivity">
+        <activity
+            android:name=".EventApprovalActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".ReceivedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ResultActivity"
+            android:label="Results"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".VoteCastActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/voteCast">
+
+
+        </activity>
+        <activity
+            android:name=".CreatePollActivity"
+            android:screenOrientation="portrait">
 
 
         </activity>
@@ -55,6 +70,7 @@
             android:name=".PollsListActivity"
             android:label=""
             android:screenOrientation="portrait">
+
 
         </activity>
     </application>
